@@ -54,3 +54,92 @@
 <header>
     <h1>Memory Maching Game</h1> <!-- 頁面標題 -->
 </header>
+
+<main>
+    <div class="grid-container">
+
+        <div id="grid1" class="grid-item"></div>
+        <div id="grid2" class="grid-item"></div>
+        <div id="grid3" class="grid-item"></div>
+        <div id="grid4" class="grid-item"></div>
+        <div id="grid5" class="grid-item"></div>
+        <div id="grid6" class="grid-item"></div>
+        <div id="grid7" class="grid-item"></div>
+        <div id="grid8" class="grid-item"></div>
+        <div id="grid9" class="grid-item"></div>
+        <div id="grid10" class="grid-item"></div>
+        <div id="grid11" class="grid-item"></div>
+        <div id="grid12" class="grid-item"></div>
+        <div id="grid13" class="grid-item"></div>
+        <div id="grid14" class="grid-item"></div>
+        <div id="grid15" class="grid-item"></div>
+        <div id="grid16" class="grid-item"></div>
+    </div>
+</main>
+
+<script>
+    // 定義 toggleGridSelection 函數，該函數會在網格項目被點擊時被呼叫
+    function toggleGridSelection(event) {
+
+        var grid = event.target; 
+
+
+        var clickCount = grid.getAttribute('data-click-count') || 0;
+
+
+        clickCount = parseInt(clickCount, 10); 
+
+
+        grid.classList.remove('yellow');
+        grid.classList.remove('green');
+
+        switch (clickCount) {
+            case 0:
+                grid.classList.add('yellow');
+                break;
+
+            case 1:
+                grid.classList.add('green');
+                break;
+
+            case 2:
+                clickCount = -1;
+                break;
+        }
+
+
+        clickCount += 1;
+
+        grid.setAttribute('data-click-count', clickCount.toString());
+  }
+
+  document.querySelectorAll('.grid-item').forEach(function (grid) {
+
+        grid.addEventListener('click', toggleGridSelection);
+    });
+</script>
+
+</body>
+</html>
+
+
+  Game Message:<Message></Message>
+  <script>
+    function AddText() {
+            document.getElementById('addTextBtn').addEventListener('click', function() {
+                var userInput = prompt("Please enter some text:");
+                if (userInput) {
+                    var newParagraph = document.createElement('p');newParagraph.textContent = userInput;document.getElementById('contentArea').appendChild(newParagraph);
+                } else {
+                    alert("No text entered. Please try again.");
+                }
+            });
+        };
+        window.onload = 1;
+    </script>
+  </head>
+
+  <body>
+
+  <div id="contentArea"></div>
+  <button id="addTextBtn">Restart Game</button>
