@@ -2,49 +2,54 @@
 <html>
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> <!-- 設定文件的內容類型和字符編碼 -->
-
-    <title>Memory Maching Game</title> <!-- 設定網頁標題 -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+	
+    <title>動態可點擊網格</title> 
 
     <style>
         * {
-            font-family: Arial; /* 設定全 HTML 字體為 Arial */
+            font-family: Arial; 
         }
 
         header, footer {
-            background-color: #666666; /* 設定 header 和 footer 的背景顏色 */
-            color: #FFFFFF; /* 設定 header 和 footer 的文字顏色 */
-            text-align: center; /* 文字居中對齊 */
-            padding: 10px; /* 內邊距設定 */
+            background-color: #666666; 
+            color: #FFFFFF; 
+            text-align: center; 
+            padding: 10px; 
         }
 
         main {
-            padding: 10px 0; /* 上下留白 */
+            padding: 10px 0; 
         }
 
         .grid-container {
-            display: grid; /* 設定為網格布局 */
-            grid-template-columns: repeat(4, 1fr); /* 創建三列等寬布局，容器寬度變化時自動調整 */
-            grid-gap: 10px; /* 卡片之間的間隙 */
-            width: 350px; /* 網格的總寬度 */
-            margin: auto; /* 將網格置於頁面中央 */
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 10px; 
+            width: 240px;
+            margin: auto; 
         }
-
+        
         .grid-item {
-            display: grid; /* 設定為網格布局 */
-            width: 80px; /* 每個網格項目的固定寬度 */
-            height: 80px; /* 每個網格項目的固定高度 */
-            justify-content: center; /* 水平居中對齊 */
-            align-items: center; /* 垂直居中對齊 */
-            background-color: #F0F0F0; /* 灰色背景 */
-            cursor: pointer; /* 指示元素可點擊 */
+            display: grid; 
+            width: 80px; 
+            height: 80px; 
+            justify-content: center; 
+            align-items: center; 
+            background-color: #F0F0F0; 
+            cursor: pointer; 
+            font-size:60px;
+            text-indent: 1000px;
+            overflow: hidden;
         }
+      
 
         .yellow {
-            background-color: #ff0;
+            text-indent: 0px;
         }
+
         .green {
-            background-color: #00f800;
+            background-color: #0f0; 
         }
     </style>
 </head>
@@ -52,94 +57,58 @@
 <body>
 
 <header>
-    <h1>Memory Maching Game</h1> <!-- 頁面標題 -->
+	<h1>動態可點擊網格</h1> 
 </header>
 
 <main>
-    <div class="grid-container">
-
-        <div id="grid1" class="grid-item"></div>
-        <div id="grid2" class="grid-item"></div>
-        <div id="grid3" class="grid-item"></div>
-        <div id="grid4" class="grid-item"></div>
-        <div id="grid5" class="grid-item"></div>
-        <div id="grid6" class="grid-item"></div>
-        <div id="grid7" class="grid-item"></div>
-        <div id="grid8" class="grid-item"></div>
-        <div id="grid9" class="grid-item"></div>
-        <div id="grid10" class="grid-item"></div>
-        <div id="grid11" class="grid-item"></div>
-        <div id="grid12" class="grid-item"></div>
-        <div id="grid13" class="grid-item"></div>
-        <div id="grid14" class="grid-item"></div>
-        <div id="grid15" class="grid-item"></div>
-        <div id="grid16" class="grid-item"></div>
+    <div class="grid-container" id="grid-container">
     </div>
 </main>
 
+<footer>
+    <b>單元五練習三</b> 
+</footer>
+
 <script>
-    // 定義 toggleGridSelection 函數，該函數會在網格項目被點擊時被呼叫
-    function toggleGridSelection(event) {
-
-        var grid = event.target; 
-
-
-        var clickCount = grid.getAttribute('data-click-count') || 0;
-
-
-        clickCount = parseInt(clickCount, 10); 
-
-
-        grid.classList.remove('yellow');
-        grid.classList.remove('green');
-
-        switch (clickCount) {
-            case 0:
-                grid.classList.add('yellow');
-                break;
-
-            case 1:
-                grid.classList.add('green');
-                break;
-
-            case 2:
-                clickCount = -1;
-                break;
-        }
-
-
-        clickCount += 1;
-
-        grid.setAttribute('data-click-count', clickCount.toString());
-  }
-
-  document.querySelectorAll('.grid-item').forEach(function (grid) {
-
-        grid.addEventListener('click', toggleGridSelection);
-    });
+  const emoji = ['😭','😁','😉','☺️','😂','😩','😔','😳'];
+  const cards = [...emoji, ...emoji];
+  
+	function toggleGridSelection(event) {
+		var grid = event.target; 
+		var clickCount = grid.getAttribute('data-click-count') || 0;
+		
+		clickCount = parseInt(clickCount, 10);
+		grid.classList.remove('yellow','green');
+		
+		switch (clickCount) {
+			case 0:
+				grid.classList.add('yellow');
+				break;
+			case 1:
+				clickCount = -1;
+				break;
+		}
+	
+		clickCount += 1;	
+		grid.setAttribute('data-click-count', clickCount.toString());
+	}
+	
+	const gridSize = 4; //prompt('請輸入網格尺寸（例如：3 表示 3x3 網格）:');
+	const gridContainer = document.getElementById('grid-container');
+  	gridContainer.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+	gridContainer.style.width = `${gridSize * 80 + (gridSize - 1) * 10}px`;
+        
+	for (let i = 1; i <= gridSize * gridSize; i++) {
+		const gridItem = document.createElement('div');
+		gridItem.className = 'grid-item';
+		gridItem.textContent = cards[i-1];
+		gridContainer.appendChild(gridItem);
+	}
+        
+	document.querySelectorAll('.grid-item').forEach(function (grid) {
+		grid.addEventListener('click', toggleGridSelection);
+	});
 </script>
 
 </body>
 </html>
-
-
-  Game Message:<Message></Message>
-  <script>
-    function AddText() {
-            document.getElementById('addTextBtn').addEventListener('click', function() {
-                var userInput = prompt("Please enter some text:");
-                if (userInput) {
-                    var newParagraph = document.createElement('p');newParagraph.textContent = userInput;document.getElementById('contentArea').appendChild(newParagraph);
-                } else {
-                    alert("No text entered. Please try again.");
-                }
-            });
-        };
-        window.onload = 1;
-    </script>
-  </head>
-
-  <body>
-
-  <div id="contentArea"></div>
-  <button id="addTextBtn">Restart Game</button>
