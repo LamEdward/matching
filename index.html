@@ -49,7 +49,7 @@
         }
 
         .green {
-            background-color: #0f0; 
+            text-indent: 0px; 
         }
     </style>
 </head>
@@ -70,44 +70,81 @@
 </footer>
 
 <script>
-  const emoji = ['😭','😁','😉','☺️','😂','😩','😔','😳'];
-  const cards = [...emoji, ...emoji];
-  
-	function toggleGridSelection(event) {
-		var grid = event.target; 
-		var clickCount = grid.getAttribute('data-click-count') || 0;
-		
-		clickCount = parseInt(clickCount, 10);
-		grid.classList.remove('yellow','green');
-		
-		switch (clickCount) {
-			case 0:
-				grid.classList.add('yellow');
-				break;
-			case 1:
-				clickCount = -1;
-				break;
-		}
-	
-		clickCount += 1;	
-		grid.setAttribute('data-click-count', clickCount.toString());
-	}
-	
-	const gridSize = 4; //prompt('請輸入網格尺寸（例如：3 表示 3x3 網格）:');
-	const gridContainer = document.getElementById('grid-container');
-  	gridContainer.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
-	gridContainer.style.width = `${gridSize * 80 + (gridSize - 1) * 10}px`;
-        
-	for (let i = 1; i <= gridSize * gridSize; i++) {
-		const gridItem = document.createElement('div');
-		gridItem.className = 'grid-item';
-		gridItem.textContent = cards[i-1];
-		gridContainer.appendChild(gridItem);
-	}
-        
-	document.querySelectorAll('.grid-item').forEach(function (grid) {
-		grid.addEventListener('click', toggleGridSelection);
-	});
+    const emoji = ['😭','😁','😉','☺️','😂','😩','😔','😳'];
+      const cards = [...emoji, ...emoji];
+      var clickedCard = null;
+      var matchedCards = 0;
+      var firstClick = true;
+      var gameStarted = false;
+      function toggleGridSelection(event) {
+        var grid = event.target; 
+        if (!gameStarted) {
+          shuffle(cards);
+          gameStarted = true;
+        }
+        if (grid.classList.contains('yellow') || grid.classList.contains('green')) {
+          return;
+        }
+        grid.classList.add('yellow');
+        if (clickedCard === null) {
+          clickedCard = grid;
+          return;
+        }
+        if (clickedCard.textContent == grid.textContent) {
+          clickedCard.classList.remove('yellow');
+          grid.classList.remove('yellow');
+          clickedCard.classList.add('green');
+          grid.classList.add('green');
+          clickedCard = null;
+          matchedCards += 2;
+          if (matchedCards === cards.length) {
+            setTimeout(() => {
+              alert('You win!');
+              resetGame();
+            }, 500);
+          }
+        } else {
+          setTimeout(() => {
+            clickedCard.classList.remove('yellow');
+            grid.classList.remove('yellow');
+            clickedCard = null;
+          }, 1000);
+        }
+      }
+      function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+      }
+      function resetGame() {
+        clickedCard = null;
+        matchedCards = 0;
+        firstClick = true;
+        gameStarted = false;
+        document.querySelectorAll('.grid-item').forEach(function (grid) {
+          grid.classList.remove('yellow');
+          grid.classList.remove('green');
+          grid.textContent = '';
+        });
+        for (let i = 1; i <= gridSize * gridSize; i++) {
+          const gridItem = document.querySelectorAll('.grid-item')[i - 1];
+          gridItem.textContent = cards[i - 1];
+        }
+      }
+      const gridSize = 4; //prompt('請輸入網格尺寸（例如：3 表示 3x3 網格）:');
+      const gridContainer = document.getElementById('grid-container');
+      gridContainer.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+      gridContainer.style.width = `${gridSize * 80 + (gridSize - 1) * 10}px`;
+      for (let i = 1; i <= gridSize * gridSize; i++) {
+        const gridItem = document.createElement('div');
+        gridItem.className = 'grid-item';
+        gridItem.textContent = cards[i - 1];
+        gridContainer.appendChild(gridItem);
+      }
+      document.querySelectorAll('.grid-item').forEach(function (grid) {
+        grid.addEventListener('click', toggleGridSelection);
+      });
 </script>
 
 </body>
