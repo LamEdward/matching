@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
 	
-    <title>動態可點擊網格</title> 
+    <title>Memory Matching Game</title> 
 
     <style>
         * {
@@ -57,7 +57,7 @@
 <body>
 
 <header>
-	<h1>動態可點擊網格</h1> 
+	<h1>Memory Matching Game</h1> 
 </header>
 
 <main>
@@ -66,7 +66,7 @@
 </main>
 
 <footer>
-    <b>單元五練習三</b> 
+    <b>單元五練習</b> 
 </footer>
 
 <script>
@@ -121,7 +121,7 @@
         clickedCard = null;
         matchedCards = 0;
         firstClick = true;
-        gameStarted = false;
+        gameStarted = true;
         document.querySelectorAll('.grid-item').forEach(function (grid) {
           grid.classList.remove('yellow');
           grid.classList.remove('green');
@@ -132,7 +132,7 @@
           gridItem.textContent = cards[i - 1];
         }
       }
-      const gridSize = 4; //prompt('請輸入網格尺寸（例如：3 表示 3x3 網格）:');
+      const gridSize = 4; 
       const gridContainer = document.getElementById('grid-container');
       gridContainer.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
       gridContainer.style.width = `${gridSize * 80 + (gridSize - 1) * 10}px`;
